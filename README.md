@@ -12,6 +12,10 @@
 ### Banco de dados
 - PostGreSQL 4
 
+### Bibliotecas
+Python (pip install)
+- requests
+
 ## Versão do Jason
 Jason 2.0 BETA
 Estado: Em desenvolvimento
@@ -19,10 +23,11 @@ Estado: Em desenvolvimento
 
 ## Etapas de desenvolvimento
 1. ChatBot simples
-2. Histórico de mensagens com PostgreSQL
+2. Histórico de mensagens temporárias
 3. Personalidade e System Prompt
-4. Tool Calling
-5. Reconhecimento e síntese de voz
+4. Histórico de mensagens com PostGreSQL
+5. Tool Calling
+6. Reconhecimento e síntese de voz
 7. Interface DeskTop com Angular e Electron
 8. Automação e controle do computador
 
@@ -33,4 +38,8 @@ Ollama:
     ollama pull qwen3.5:4b
 - Inicializar o Qwen
     ollama run qwen3.5:4b
+- Ver se está sendo rodado na CPU ou GPU
+    ollama ps
+
+
 
