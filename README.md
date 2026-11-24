@@ -4,6 +4,8 @@
 ### Linguagens e FrameWorks
 - Python 3.14.19
 - Angular 22.2.1
+- SQLAlchemy 2.0
+- Psycopg 3
 
 ### Modelos de IA e Ambientes Utilizados
 - Qwen 3.5 4B
@@ -15,6 +17,8 @@
 ### Bibliotecas
 Python (pip install)
 - requests
+- sqlalchemy "psycopg[binary]"
+- python-dotenv
 
 ## Versão do Jason
 Jason 2.0 BETA

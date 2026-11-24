@@ -46,7 +46,7 @@ while True:
             json={
                 "model": MODEL,
                 "messages": messages, # Envio todo histórico a cada mensagem, incluindo a atual
-                "stream": False
+                "stream": True
             },
             timeout=300
         )
