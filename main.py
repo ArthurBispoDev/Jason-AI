@@ -1,4 +1,5 @@
 import requests
+from config.system_prompt import SYSTEM_PROMPT
 
 API_URL = "http://localhost:11434/api/chat"
 MODEL = "qwen3.5:4b"
@@ -8,6 +9,12 @@ bot_name = "JASON"
 
 # Histórico de conversas
 messages = []
+
+# Adicionando o System Prompt
+messages.append({
+    "role": "system",
+    "content": SYSTEM_PROMPT
+})
 
 print(f"{bot_name} iniciado!")
 print("Digite '/bye' para encerrar.\nDigite '/messages' para ver o histórico de mensagens")

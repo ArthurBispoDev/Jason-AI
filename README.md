@@ -21,6 +21,31 @@ Jason 2.0 BETA
 Estado: Em desenvolvimento
 
 
+## Requisitos do Sistema
+
+### Hardware
+
+| Componente | Mínimo estimado | Recomendado |
+|---|---|---|
+| Processador | Intel Core i5 / AMD Ryzen 5 | Intel Core i7 / AMD Ryzen 7 |
+| Memória RAM | 8 GB | 16 GB ou superior |
+| Placa de vídeo | Integrada (execução via CPU) | GPU dedicada com 8 GB VRAM |
+| Armazenamento | 6 GB livres | 10 GB livres ou superior |
+
+### Software
+
+- Windows 10 ou Windows 11 (64 bits).
+- Python 3.10 ou superior.
+- Ollama instalado e configurado.
+- Modelo Qwen 3.5 4B.
+
+**Observações:**
+- O modelo é executado localmente através do Ollama, sem necessidade de uma API comercial.
+- A execução via CPU é possível, mas pode apresentar menor desempenho.
+- Uma GPU compatível pode acelerar a geração das respostas.
+- É necessária conexão com a internet para baixar o modelo inicialmente.
+
+
 ## Etapas de desenvolvimento
 1. ChatBot simples
 2. Histórico de mensagens temporárias
