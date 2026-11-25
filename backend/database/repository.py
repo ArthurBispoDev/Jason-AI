@@ -1,8 +1,8 @@
 
 from sqlalchemy.orm import Session
 
-from database.connection import engine
-from database.models import Conversation, Message
+from backend.database.connection import engine
+from backend.database.models import Conversation, Message
 
 
 def create_conversation(first_message: str):

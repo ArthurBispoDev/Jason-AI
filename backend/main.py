@@ -1,9 +1,9 @@
 import requests
 
-from config.system_prompt import SYSTEM_PROMPT
+from backend.config.system_prompt import SYSTEM_PROMPT
 
 import json
-from database.repository import create_conversation, save_message
+from backend.database.repository import create_conversation, save_message
 
 
 API_URL = "http://localhost:11434/api/chat"
