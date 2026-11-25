@@ -1,26 +1,59 @@
 import requests
 
-from backend.config.system_prompt import SYSTEM_PROMPT
+from config.system_prompt import SYSTEM_PROMPT
 
 import json
-from backend.database.repository import create_conversation, save_message
+from database.repository import (
+    create_conversation,
+    save_message,
+    get_conversation
+)
+
+conversation_id = None
+
+conversation_input = input(
+    "Digite o ID da conversa que deseja continuar (ou pressione ENTER para nova conversa): "
+).strip()
+
+if conversation_input:
+
+    try:
+        conversation_id = int(conversation_input)
+
+        conversation = get_conversation(conversation_id)
+
+        if conversation is None:
+            print("Conversa não encontrada. Iniciando uma nova conversa.")
+            conversation_id = None
+
+    except ValueError:
+        print("ID inválido. Iniciando uma nova conversa.")
+        conversation_id = None
 
 
 API_URL = "http://localhost:11434/api/chat"
-MODEL = "qwen3.5:4b"
+MODEL = "qwen3.5:9b"    
 
 user_name = "\033[33mVocê\033[0m"
 bot_name = "\033[34mJASON\033[0m"
 
-# Histórico de conversas
-messages = []
-conversation_id = None
+# Histórico de conversa, com messages ja incluido
+messages = [
+    {
+        "role": "system",
+        "content": SYSTEM_PROMPT
+    }
+]
 
-# Adicionando o System Prompt
-messages.append({
-    "role": "system",
-    "content": SYSTEM_PROMPT
-})
+if conversation_id is not None:
+
+    for message in conversation["messages"]:
+        messages.append(message)
+
+    print(f"Continuando conversa: {conversation['title']}")
+
+else:
+    print("Iniciando uma nova conversa.")
 
 print(f"{bot_name} iniciado!")
 print("\033[32mDigite '/bye' para encerrar.\nDigite '/messages' para ver o histórico de mensagens\033[0m")
@@ -61,7 +94,9 @@ while True:
                 "stream": True,
                 "think": False,
                 "options": {
-                    "temperature": 0.75 # > mais criativo, < mais técnico
+                    "temperature": 0.5,
+                    "top_p": 0.9,
+                    "top_k": 20
                 }
             },
             stream=True,

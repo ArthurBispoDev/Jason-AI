@@ -8,7 +8,7 @@
 - Psycopg 3
 
 ### Modelos de IA e Ambientes Utilizados
-- Qwen 3.5 4B
+- qwen3.5:9b
 - Ollama 0.40.17
 
 ### Banco de dados

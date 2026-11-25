@@ -1,8 +1,7 @@
+from sqlalchemy.orm import Session, selectinload
 
-from sqlalchemy.orm import Session
-
-from backend.database.connection import engine
-from backend.database.models import Conversation, Message
+from database.connection import engine
+from database.models import Conversation, Message
 
 
 def create_conversation(first_message: str):
@@ -43,3 +42,27 @@ def save_message(conversation_id: int, role: str, content: str):
 
         session.add(message)
         session.commit()
+
+def get_conversation(conversation_id: int):
+
+    with Session(engine) as session:
+
+        conversation = session.query(Conversation)\
+            .options(selectinload(Conversation.messages))\
+            .filter(Conversation.id == conversation_id)\
+            .first()
+
+        if conversation is None:
+            return None
+
+        return {
+            "id": conversation.id,
+            "title": conversation.title,
+            "messages": [
+                {
+                    "role": message.role,
+                    "content": message.content
+                }
+                for message in conversation.messages
+            ]
+        }
