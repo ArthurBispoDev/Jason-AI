@@ -1,14 +1,20 @@
 import requests
+
 from config.system_prompt import SYSTEM_PROMPT
+
+import json
+from database.repository import create_conversation, save_message
+
 
 API_URL = "http://localhost:11434/api/chat"
 MODEL = "qwen3.5:4b"
 
-user_name = "Você"
-bot_name = "JASON"
+user_name = "\033[33mVocê\033[0m"
+bot_name = "\033[34mJASON\033[0m"
 
 # Histórico de conversas
 messages = []
+conversation_id = None
 
 # Adicionando o System Prompt
 messages.append({
@@ -17,7 +23,7 @@ messages.append({
 })
 
 print(f"{bot_name} iniciado!")
-print("Digite '/bye' para encerrar.\nDigite '/messages' para ver o histórico de mensagens")
+print("\033[32mDigite '/bye' para encerrar.\nDigite '/messages' para ver o histórico de mensagens\033[0m")
 
 while True:
 
@@ -32,11 +38,17 @@ while True:
         print(messages)
         continue
 
-    # Adiciona a mensagem ao histórico
+    # Adiciona a mensagem ao histórico temporário
     messages.append({
         "role": "user",
         "content": user_input
     })
+
+    # Cria uma conversa ou salva a mensagem nela
+    if conversation_id is None:
+        conversation_id = create_conversation(user_input)
+    else:
+        save_message(conversation_id, "user", user_input)
 
     try:
 
@@ -45,27 +57,48 @@ while True:
             API_URL,
             json={
                 "model": MODEL,
-                "messages": messages, # Envio todo histórico a cada mensagem, incluindo a atual
-                "stream": True
+                "messages": messages,
+                "stream": True,
+                "think": False,
+                "options": {
+                    "temperature": 0.75 # > mais criativo, < mais técnico
+                }
             },
+            stream=True,
             timeout=300
         )
 
         response.raise_for_status()
 
-        # Converte a resposta para JSON
-        data = response.json()
+        assistant_response = ""
 
-        # Extrai o conteúdo da resposta
-        assistant_response = data["message"]["content"]
+        print(f"\n{bot_name}: ", end="", flush=True)
 
-        print(f"\n{bot_name}: {assistant_response}\n") # Envio o contéudo inteiro no chat
+
+        # Adiciono aos poucos cada pedaço para dar efeito de digitação em tempo real
+        for line in response.iter_lines():
+
+            if line:
+
+                data = json.loads(line)
+
+                content = data["message"]["content"]
+
+                if content:
+                    assistant_response += content
+                    print(content, end="", flush=True)
+
+        # Pulo linha no fim da resposta
+        print("\n")
 
         # Adiciono a resposta no histórico de mensagens
         messages.append({
             "role": "assistant",
             "content": assistant_response
         })
+
+        # Salvo a resposta dele na conversa
+        save_message(conversation_id, "assistant", assistant_response)
 
     except requests.exceptions.ConnectionError:
         print("\nErro: Não foi possível conectar ao Ollama.")

@@ -63,12 +63,19 @@ Estado: Em desenvolvimento
 ## Comandos
 
 Ollama:
-- Adicionar o Qwen no Ollama:
+- Instalar o Ollama  
+    winget install Ollama.Ollama
+- Adicionar o Qwen no Ollama  
     ollama pull qwen3.5:4b
-- Inicializar o Qwen
+- Inicializar o Qwen  
     ollama run qwen3.5:4b
-- Ver se está sendo rodado na CPU ou GPU
+- Ver se está sendo rodado na CPU ou GPU  
     ollama ps
 
+## Guia de Uso
 
+1. Instale todas bibliotecas no projeto em "Bibliotecas"
+2. Crie o .env com as variáveis de ambiente
+3. Crie o banco de dados referênciado no .env no PostGreSQL
+4. Execute o script de create_tables.py em database
 
