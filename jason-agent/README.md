@@ -19,6 +19,7 @@ Python (pip install)
 - requests
 - sqlalchemy "psycopg[binary]"
 - python-dotenv
+- "fastapi[standard]"
 
 ## Versão do Jason
 Jason 2.0 BETA

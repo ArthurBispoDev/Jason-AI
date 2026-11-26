@@ -12,7 +12,7 @@
         <p class="split">Conversas</p>
         <ul>
             @for(chat of chats; track chat.id) {
-                <li>
+                <li translate="no">
                     @if(chat.id == chatService.conversaAtualId()) {
                         <button class="chat --chat-atual">
                             {{ chat.nome }}
