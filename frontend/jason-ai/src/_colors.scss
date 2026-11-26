@@ -1,7 +1,12 @@
-$primary-color: #000;
-$light-primary-color: #0d0d0d;
-$light-strong-primary-color: #191a1c;
-$light-super-primary-color: #969696;
+@use 'sass:color';
 
-$second-color: rgb(255, 201, 85);
-$dark-second-color: rgb(212, 163, 70)
+$primary-color: #1b1b1b;
+
+$light-primary-color: color.scale($primary-color, $lightness: 5%);
+$light-strong-primary-color: color.scale($primary-color, $lightness: 10%);
+$light-super-primary-color: color.scale($primary-color, $lightness: 60%);
+
+$second-color: #FFC955;
+
+$dark-second-color: color.scale($second-color, $lightness: -15%);
+$light-second-color: color.scale($second-color, $lightness: 20%);
