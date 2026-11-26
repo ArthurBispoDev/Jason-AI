@@ -8,5 +8,10 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
 })
 export class App {
+  splitStatus = {
+    'Conversas': true,
+    'Configurações': false
+  };
+
   protected readonly title = signal('jason-ai');
 }
