@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ChatModel } from '../models/chat.model';
 import { Router } from '@angular/router';
+import { MessageModel } from '../models/message.model';
 
 @Injectable({
     providedIn: 'root'
@@ -35,12 +36,39 @@ export class ChatService {
 
     conversaAtualId = signal<number | null>(null);
 
-    mudaConversa(id: number | null) {
-    this.conversaAtualId.set(
-      id
-    );
+    messages = signal<MessageModel[]>([]);
 
-    this.router.navigate(['/c', id]);
-  }
+    mudaConversa(chatId: number | null) {
+        this.conversaAtualId.set(
+        chatId
+        );
 
+        this.messages.set(this.buscaMensagensPorChat(chatId));
+        console.log(this.messages())
+
+        this.router.navigate(['/c', chatId]);
+    }
+
+    private buscaMensagensPorChat(chatId: number | null): MessageModel[] {
+        if (chatId === null) return [];
+
+        const data: Record<number, MessageModel[]> = {
+            1: [
+                {
+                    id: 10,
+                    role: 'user',
+                    content: 'Olá Jason, como você está',
+                    createdAt: new Date()
+                },
+                {
+                    id: 11,
+                    role: 'assistant',
+                    content: 'Estou bem, Senhor. Obrigado por perguntar!',
+                    createdAt: new Date()
+                }
+            ]
+        };
+
+        return data[chatId] ?? [];
+    }
 }
