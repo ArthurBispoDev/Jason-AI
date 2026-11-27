@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { Sidebar } from '../../components/sidebar/sidebar';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from '../../services/chat.service';
 import { InputChat } from '../../components/input-chat/input-chat';
+import { MessageModel } from '../../models/message.model';
 
 @Component({
   imports: [Sidebar, InputChat],
@@ -10,18 +11,18 @@ import { InputChat } from '../../components/input-chat/input-chat';
   styleUrl: './chat.scss',
   templateUrl: './chat.html',
 })
-export class Chat {
+export class Chat implements OnInit {
+
   private route = inject(ActivatedRoute);
   private chatService = inject(ChatService);
 
   idUri = signal<number>(Number(this.route.snapshot.paramMap.get('id')));
+  messages = signal<MessageModel[]>([]);
 
   ngOnInit() {
-
     if (this.idUri() !== 0) {
-      this.chatService.mudaConversa(this.idUri());
+        this.chatService.mudaConversa(this.idUri());
+        this.chatService.loadMessages(this.idUri());
     }
-  
   }
-  
 }

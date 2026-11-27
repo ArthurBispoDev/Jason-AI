@@ -1,7 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ChatModel } from '../models/chat.model';
+import { ChatModel, MessagesChatResponse } from '../models/chat.model';
 import { Router } from '@angular/router';
 import { MessageModel } from '../models/message.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -9,42 +11,19 @@ import { MessageModel } from '../models/message.model';
 export class ChatService {
 
     private router = inject(Router);
+    private http = inject(HttpClient);
 
-    chats = signal<ChatModel[]>([
-        {
-            nome: 'Estudando Java',
-            id: 1
-        },
-        {
-            nome: 'Bom dia Jason',
-            id: 2
-        },
-        {
-            nome: 'Sistema funcionando?',
-            id: 3
-        },
-        {
-            nome: 'Qual placa de vídeo...',
-            id: 4
-        },
-        {
-            nome: 'Projeto de Sistema Cozz',
-            id: 5
-        },
-        
-    ]);
+    private readonly API_URL = 'http://127.0.0.1:8000/conversations';
+    private _messages = signal<MessageModel[]>([]);
 
     conversaAtualId = signal<number | null>(null);
 
-    messages = signal<MessageModel[]>([]);
+    messages = this._messages.asReadonly();
 
     mudaConversa(chatId: number | null) {
         this.conversaAtualId.set(
         chatId
         );
-
-        this.messages.set(this.buscaMensagensPorChat(chatId));
-        console.log(this.messages())
 
         this.router.navigate(['/c', chatId]);
     }
@@ -70,5 +49,26 @@ export class ChatService {
         };
 
         return data[chatId] ?? [];
+    }
+
+    getConversations(): Observable<ChatModel[]> {
+        return this.http.get<ChatModel[]>(this.API_URL);
+    }
+
+    loadMessages(conversationId: number): void {
+        this.getMessages(conversationId).subscribe({
+            next: (response) => {
+                this._messages.set(response.messages);
+            },
+            error: (error) => {
+                console.error('Erro ao carregar mensagens:', error);
+            }
+        });
+    }
+
+    private getMessages(conversationId: number): Observable<MessagesChatResponse> {
+        return this.http.get<MessagesChatResponse>(
+            `${this.API_URL}/${conversationId}`
+        );
     }
 }

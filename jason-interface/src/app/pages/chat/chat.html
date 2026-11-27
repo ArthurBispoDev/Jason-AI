@@ -7,6 +7,18 @@
     <div class="input-chat">
       <app-input-chat></app-input-chat>
     </div>
+
+    <div class="chat">
+      @for (message of chatService.messages(); track message.id) {
+          <div
+              class="message"
+              [class.--user]="message.role === 'user'"
+              [class.--assistant]="message.role === 'assistant'"
+          >
+              {{ message.content }}
+          </div>
+      }
+    </div>
   </div>
 
   <main>

@@ -10,5 +10,5 @@ $dark-primary-color: color.scale($primary-color, $lightness: -7%);
 
 $second-color: #e9bc41;
 
-$dark-second-color: color.scale($second-color, $lightness: -15%);
+$dark-second-color: color.scale($second-color, $lightness: -30%);
 $light-second-color: color.scale($second-color, $lightness: 20%);

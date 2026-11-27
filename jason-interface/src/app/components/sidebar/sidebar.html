@@ -11,15 +11,15 @@
     <nav>
         <p class="split">Conversas</p>
         <ul>
-            @for(chat of chats; track chat.id) {
+            @for(chat of chats(); track chat.id) {
                 <li translate="no">
                     @if(chat.id == chatService.conversaAtualId()) {
                         <button class="chat --chat-atual">
-                            {{ chat.nome }}
+                            {{ chat.title }}
                         </button>
                     }@else{
-                        <button class="chat" (click)="chatService.mudaConversa(chat.id)">
-                            {{ chat.nome }}
+                        <button class="chat" (click)="mudaConversa(chat.id)">
+                            {{ chat.title }}
                         </button>
                     }
                 </li>
