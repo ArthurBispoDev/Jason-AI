@@ -8,26 +8,34 @@ main {
 
 .container {
     display: flex;
+    
     width: 100%;
     height: 100%;
 
-    margin: 0;
-    padding: 0;
-
     .sidebar {
-        flex: 0 0 300px;
+        flex: 0 0 400px;
         height: 100%;
     }
 
     .content {
         display: flex;
         justify-content: center;
+
         position: relative;
 
         width: 100%;
         height: 100vh;
 
         background-color: $primary-color;
+
+        header {
+            display: none;
+
+            width: 100%;
+            height: 10%;
+
+            background-color: aqua;
+        }
 
         .input-chat {
             position: absolute;
@@ -45,6 +53,7 @@ main {
 
             gap: 40px;
 
+            max-width: 100%;
             width: 80%;
             height: 100vh;
 
@@ -52,6 +61,7 @@ main {
             padding-bottom: 120px;
 
             overflow-y: auto;
+            overflow-x: auto;
 
             /* Chrome, Edge e Safari */
             &::-webkit-scrollbar {
@@ -65,7 +75,7 @@ main {
                 font: normal 20px Arial;
 
                 border: 2px solid $light-super-primary-color;
-                border-radius: 13px;
+                border-radius: 25px;
 
                 padding: 10px;
 
@@ -95,8 +105,25 @@ main {
     }
 }
 
+@media (max-width: 1032px) {
+    .container {
+        .sidebar {
+            display: none;
+        }
 
+        .content {
+            flex-direction: column;
 
+            header {
+                display: block;
+            }
+
+            .chat {
+                width: 98%;
+            }
+        }
+    }
+}
 
 
 

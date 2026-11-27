@@ -4,9 +4,9 @@
   </div>
 
   <div class="content">
-    <div class="input-chat">
-      <app-input-chat></app-input-chat>
-    </div>
+    <header>
+      
+    </header>
 
     <div class="chat">
       @for (message of chatService.messages(); track message.id) {
@@ -19,8 +19,9 @@
           </div>
       }
     </div>
-  </div>
 
-  <main>
-  </main>
+    <div class="input-chat">
+      <app-input-chat></app-input-chat>
+    </div>
+  </div>
 </div>
