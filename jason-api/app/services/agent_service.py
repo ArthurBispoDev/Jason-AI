@@ -21,7 +21,14 @@ class AgentService:
 
             data = response.json()
 
-            return data["content"]
+            content = data.get("content", "").strip()
+
+            if not content:
+                raise RuntimeError(
+                    "O JASON Agent retornou uma resposta vazia."
+                )
+
+            return content
 
         except requests.exceptions.ConnectionError:
             raise RuntimeError(

@@ -14,7 +14,7 @@ app = FastAPI(
 )
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
-MODEL = "qwen3.5:4b"
+MODEL = "qwen3.5:9b"
 
 
 class MessageInput(BaseModel): # Mensagem enviada
@@ -66,7 +66,22 @@ def chat(request: ChatRequest):
         response.raise_for_status()
 
         data = response.json()
-        content = data["message"]["content"]
+
+        message = data.get("message", {})
+        content = message.get("content", "").strip()
+
+        if not content:
+            thinking = message.get("thinking", "")
+
+            print("\n[ERRO] Ollama retornou conteúdo vazio.")
+            print(f"Modelo: {data.get('model')}")
+            print(f"Motivo do término: {data.get('done_reason')}")
+            print(f"Tamanho do thinking: {len(thinking)}")
+
+            raise HTTPException(
+                status_code=502,
+                detail="O Ollama retornou uma resposta sem conteúdo."
+            )
 
         return ChatResponse(content=content)
 

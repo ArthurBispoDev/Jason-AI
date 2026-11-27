@@ -12,3 +12,8 @@ export interface MessagesChatResponse {
     created_at: Date;
     messages: MessageModel[];
 }
+
+export interface JasonResponse {
+    user_message: MessageModel;
+    assistant_message: MessageModel;
+}

@@ -44,15 +44,18 @@ class ChatRepository:
 
         return message
 
+    
     def get_conversation(self, conversation_id: int):
 
         statement = (
             select(Conversation)
             .options(selectinload(Conversation.messages))
             .where(Conversation.id == conversation_id)
+            .execution_options(populate_existing=True)
         )
 
         return self.db.scalars(statement).first()
+
 
     def list_conversations(self):
         statement = (
