@@ -1,3 +1,5 @@
-"fastapi[standard]"
-sqlalchemy "psycopg[binary]" 
+requests
+fastapi[standard]
+sqlalchemy 
+psycopg[binary]
 python-dotenv

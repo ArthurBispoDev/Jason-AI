@@ -22,7 +22,7 @@ export class Chat implements OnInit {
   ngOnInit() {
     if (this.idUri() !== 0) {
         this.chatService.mudaConversa(this.idUri());
-        this.chatService.loadMessages(this.idUri());
+        this.chatService.atualizarMenssagensBanco(this.idUri());
     }
   }
 }

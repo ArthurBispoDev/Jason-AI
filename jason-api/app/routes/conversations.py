@@ -7,7 +7,7 @@ from app.schemas.conversation import (
     ConversationResponse,
     ConversationDetailResponse
 )
-from app.schemas.message import MessageCreate, MessageResponse
+from app.schemas.message import MessageCreate, ChatSendResponse
 from app.services.chat_service import ChatService
 
 router = APIRouter(prefix="/conversations", tags=["Conversations"])
@@ -52,10 +52,11 @@ def get_conversation(
     return conversation
 
 
+
 @router.post(
     "/{conversation_id}/messages",
-    response_model=MessageResponse,
-    status_code=status.HTTP_201_CREATED
+    response_model=ChatSendResponse,
+    status_code=status.HTTP_200_OK
 )
 def create_message(
     conversation_id: int,
@@ -65,14 +66,21 @@ def create_message(
     service = ChatService(db)
 
     try:
-        message = service.save_message(
+        messages = service.send_message(
             conversation_id=conversation_id,
             content=data.content
         )
+
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
 
-    if message is None:
-        raise HTTPException(status_code=404, detail="Conversa não encontrada.")
+    except RuntimeError as error:
+        raise HTTPException(status_code=502, detail=str(error))
 
-    return message
+    if messages is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Conversa não encontrada."
+        )
+
+    return messages

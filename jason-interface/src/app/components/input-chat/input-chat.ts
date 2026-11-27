@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   imports: [FormsModule],
@@ -8,11 +9,14 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './input-chat.html',
 })
 export class InputChat {
+  private chatService = inject(ChatService);
 
   mensagem: string = '';
 
   enviarMensagem() {
-    console.log(this.mensagem);
+    if(!this.mensagem.trim()) return;
+
+    console.log(this.chatService.enviarMensagemUser(this.mensagem.trim()));
 
     this.mensagem = '';
   }

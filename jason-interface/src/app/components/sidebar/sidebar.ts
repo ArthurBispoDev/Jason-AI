@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ChatModel } from '../../models/chat.model';
 import { ChatService } from '../../services/chat.service';
+import { Chat } from '../../pages/chat/chat';
 
 @Component({
   imports: [],
@@ -10,24 +11,16 @@ import { ChatService } from '../../services/chat.service';
 })
 export class Sidebar {
 
-  private chatService = inject(ChatService);
+    private chatService = inject(ChatService);
 
-  chats = signal<ChatModel[]>([]);
+    chats = this.chatService.conversas;
 
-  ngOnInit(): void {
-        this.chatService.getConversations().subscribe({
-            next: (data) => {
-                this.chats.set(data);
-            },
-            error: (error) => {
-                console.error('Erro ao buscar conversas:', error);
-            }
-        });
+    ngOnInit(): void {
+        this.chatService.atualizarConversasBanco();
     }
 
     mudaConversa(chatId: number) {
         this.chatService.mudaConversa(chatId);
-        this.chatService.mudaConversa(chatId);
-        this.chatService.loadMessages(chatId);
+        this.chatService.atualizarMenssagensBanco(chatId);
     }
 }

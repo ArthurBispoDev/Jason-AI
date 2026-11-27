@@ -15,3 +15,7 @@ class MessageResponse(BaseModel):
     role: Literal["user", "assistant", "system"]
     content: str
     created_at: datetime
+
+class ChatSendResponse(BaseModel):
+    user_message: MessageResponse
+    assistant_message: MessageResponse

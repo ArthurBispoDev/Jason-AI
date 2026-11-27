@@ -43,6 +43,7 @@ def save_message(conversation_id: int, role: str, content: str):
         session.add(message)
         session.commit()
 
+
 def get_conversation(conversation_id: int):
 
     with Session(engine) as session:
@@ -55,6 +56,11 @@ def get_conversation(conversation_id: int):
         if conversation is None:
             return None
 
+        messages = sorted(
+            conversation.messages,
+            key=lambda message: message.id
+        )
+
         return {
             "id": conversation.id,
             "title": conversation.title,
@@ -63,6 +69,6 @@ def get_conversation(conversation_id: int):
                     "role": message.role,
                     "content": message.content
                 }
-                for message in conversation.messages
+                for message in messages
             ]
         }
